@@ -1,7 +1,10 @@
 import { displayProducts } from "./allProductsView.js";
+import { displayRoastLevels } from "./roastLevels.js";
 
-function initApp() {
-    displayProducts();
+async function initApp() {
+    await displayProducts();
+    await displayRoastLevels()
+
 }
 
 document.addEventListener("DOMContentLoaded", initApp);

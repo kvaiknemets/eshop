@@ -27,7 +27,7 @@ export const fetchRoastLevels = async () => {
         if (!Array.isArray(data)) throw new Error("Data format is incorrect");
         const roastLevels = data.map(item => item.roast_level).filter(Boolean);
         const uniqueRoastLevels = [...new Set(roastLevels)];
-        return uniqueRoastLevels;
+        return uniqueRoastLevels.sort((a, b) => a - b); // Sorteerib numbrid järjekorda
     } catch (error) {
         console.error("Error: ", error);
     }

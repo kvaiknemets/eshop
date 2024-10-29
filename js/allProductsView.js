@@ -1,13 +1,16 @@
 import { fetchProducts } from "./api.js";
 
-export async function displayProducts(category) {
-    const products = await fetchProducts();
+let products = []
+export async function displayProducts(roastLevel) {
+    if (products.length === 0) {
+        products = await fetchProducts();
+    }
     const productContainer = document.querySelector('.product-container');
     productContainer.innerHTML = '';
 
     let displayedProducts;
-    if (category) {
-        displayedProducts = products.filter(product => product.category === category);
+    if (roastLevel) {
+        displayedProducts = products.filter(product => product.roast_level === roastLevel);
     } else {
         displayedProducts = products;
     }
