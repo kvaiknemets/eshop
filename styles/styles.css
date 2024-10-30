@@ -18,6 +18,7 @@ body {
   margin: 0;
 }
 
+/* Filtreerimine */
 .categories {
   padding: 20px;
   background-color: #f4f4f4;
@@ -27,6 +28,7 @@ body {
 .items-container {
   display: flex;
   justify-content: center;
+  align-items: center;
   gap: 20px;
   margin-top: 20px;
   flex-wrap: wrap;
@@ -59,16 +61,17 @@ h1 {
 
 /* Toodete konteiner */
 .product-container {
-  /* max-width: 800px; */
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: center;
+  align-items: flex-start;
   gap: 25px;
-  margin: 20px auto;
+  margin: auto;
+  max-width: 1200px;
 }
 
 .product-container > * {
-  flex: 1 1 calc(33.33% - 60px);
+  flex: 0 1 300px;
 }
 
 /* Toote stiil */
@@ -81,6 +84,8 @@ h1 {
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   text-align: center;
   position: relative;
+  width: 100%;
+  max-width: 300px;
 }
 
 /* Toote pealkiri */
@@ -97,10 +102,90 @@ h1 {
   color: #333;
 }
 
+/* Ühe toote leht */
+.product-view {
+  padding: 25px;
+  border-radius: 10px;
+  max-width: 1200px;
+  margin: 20px auto;
+  font-family: Arial, sans-serif;
+}
+
+.product-content {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+  /* Pildi ja teksti vaheline ruum */
+}
+
+.product-image {
+  flex: 1;
+  max-width: 600px;
+}
+
+.product-image img {
+  width: 600px;
+  height: auto;
+  border-radius: 8px;
+}
+
+.product-details {
+  flex: 1.5;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  margin-top: 40px;
+}
+
+.product-details h2 {
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.product-details p {
+  font-size: 16px;
+  color: #555;
+  line-height: 1.4;
+  margin: 4px 0;
+}
+
+.product-details .price {
+  font-size: 20px;
+  color: #1a8b1a;
+  font-weight: bold;
+  margin-top: 30px;
+}
+
+.product-details .inventory {
+  font-size: 14px;
+  color: #999;
+  margin-top: 5px;
+}
+
+.product-details .buy-button {
+  align-self: flex-start;
+  /* Align button to the left */
+  padding: 8px 16px;
+  background-color: #739445;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-top: 12px;
+  transition: background-color 0.3s ease;
+}
+
+.product-details .buy-button:hover {
+  background-color: #597343;
+}
+
 /* Lisa ostukorvi nupp */
 .product button {
   padding: 10px 15px;
-  background-color: #28a745;
+  background-color: #739445;
   color: white;
   border: none;
   border-radius: 5px;
@@ -109,7 +194,7 @@ h1 {
 }
 
 .product button:hover {
-  background-color: #218838;
+  background-color: #597343;
 }
 
 .product button:disabled {
@@ -117,9 +202,15 @@ h1 {
   cursor: not-allowed;
 }
 
+#product-button-container {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
 /* Ostukorvi stiil */
 #cart {
-  /* max-width: 800px; */
+  max-width: 1200px;
   margin: 20px auto;
   padding: 20px;
   background-color: #fff;

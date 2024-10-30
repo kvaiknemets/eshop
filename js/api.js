@@ -1,9 +1,15 @@
 const API_URL = "https://fake-coffee-api.vercel.app";
+import { inventory } from "./inventory.js";
 
 export const fetchProducts = async (param) => {
     try {
         const response = await fetch(`${API_URL}/api`);
-        return response.json();
+        const data = await response.json();
+        data.forEach(product => {
+            const amount = Math.floor((Math.random() * 100))
+            inventory.addItem(product, amount)
+        })
+        return data;
     } catch (error) {
         console.error("Error: ", error);
     }
