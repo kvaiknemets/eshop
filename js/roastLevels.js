@@ -1,6 +1,8 @@
 import { displayProducts } from "./allProductsView.js";
 import { fetchRoastLevels } from "./api.js";
 
+let roastLevels;
+
 // Categories
 export async function displayRoastLevels() {
     const header = document.querySelector('.categories h1');
@@ -10,7 +12,9 @@ export async function displayRoastLevels() {
     categoriesContainer.firstElementChild.addEventListener('click', () => {
         displayProducts();
     });
-    const roastLevels = await fetchRoastLevels()
+    if (!roastLevels) {
+        roastLevels = await fetchRoastLevels()
+    }
     roastLevels.forEach(level => {
         const categoryElement = document.createElement('div');
         categoryElement.className = 'item'

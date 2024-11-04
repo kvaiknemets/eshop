@@ -1,30 +1,31 @@
 import { fetchProducts } from "./api.js";
 import { inventory } from "./inventory.js";
 import { cart } from "./shoppingCart.js";
-import { updateCartDisplay } from "./cartView.js";
+import { clearCartView, updateCartDisplay } from "./cartView.js";
 import { navigate } from "./router.js";
 import { clearProductView } from "./productView.js";
 import { hideRoastLevels, displayRoastLevels } from "./roastLevels.js";
 
-export let products = []
+let products;
+
 export async function displayProducts(roastLevel) {
     clearProductView()
-    if (products.length === 0) {
+    clearCartView()
+
+    if (!products) {
         products = await fetchProducts();
     }
+
     const header = document.querySelector('.container h1');
     header.textContent = 'Products'
     const productContainer = document.querySelector('.product-container');
     productContainer.innerHTML = '';
 
     await displayRoastLevels()
+    const displayedProducts = (roastLevel && roastLevel !== 'all')
+        ? products.filter(product => product.roast_level === roastLevel)
+        : products;
 
-    let displayedProducts;
-    if (roastLevel && roastLevel !== 'all') {
-        displayedProducts = products.filter(product => product.roast_level === roastLevel);
-    } else {
-        displayedProducts = products;
-    }
     displayedProducts.forEach(product => {
         const productElement = document.createElement('div');
         const buttonContainer = document.createElement('div');
@@ -48,7 +49,7 @@ export async function displayProducts(roastLevel) {
         // Tootekaart
         productElement.classList.add('product');
         productElement.innerHTML = `
-            <img src="${product.image_url}" alt="${product.name}" style="width: 210px; height: 210px;">
+            <img src="${product.image_url}" alt="${product.name}">
             <h2>${product.name}</h2>
             <p>Price: ${product.price}€</p>
         `;
@@ -73,7 +74,7 @@ export async function displayProducts(roastLevel) {
             }
             cart.addItem(product, 1);
             updateInventoryDisplay();
-            updateCartDisplay();
+            // updateCartDisplay();
         });
         viewButton.addEventListener('click', () => {
             document.querySelector('.container h1').textContent = product.name

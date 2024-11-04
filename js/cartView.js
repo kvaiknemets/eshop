@@ -1,26 +1,32 @@
 // Shopping cart
 import { cart } from "./shoppingCart.js";
 import { inventory } from "./inventory.js";
-const cartContainer = document.getElementById('cart');
-const cartItemsContainer = document.getElementById('cart-items');
+import { hideRoastLevels } from "./roastLevels.js";
+import { clearProductView } from "./productView.js";
+const cartContainer = document.querySelector('.cart-container');
 
 export function updateCartDisplay() {
-    cartItemsContainer.innerHTML = '';
+    cartContainer.innerHTML = `
+        <div id="cart">
+            <div id="cart-items">
+            </div>
+        </div>`
+    const cartDiv = document.getElementById('cart')
+    const cartItemsContainer = document.getElementById('cart-items');
     // Kui ostukorv on tühi, siis näitab teksti, et on tühi:
     if (cart.items.length === 0) {
-        const cartHeading = cartContainer.querySelector('h2');
         const emptyCartMessage = document.createElement('p');
         emptyCartMessage.textContent = 'Cart is empty.';
-        cartHeading.insertAdjacentElement('afterend', emptyCartMessage);
+        cartDiv.appendChild(emptyCartMessage)
         return;
     } else {  // Kui ei ole tühi, siis tekst kaob
-        const emptyCartMessage = cartContainer.querySelector('p');
+        const emptyCartMessage = cartDiv.querySelector('p');
         if (emptyCartMessage) {
             emptyCartMessage.remove();
         }
     }
 
-    // Add cart header
+    // Ostukorvi päis
     const headerRow = document.createElement('div');
     headerRow.className = 'cart-item';
     headerRow.innerHTML = `
@@ -31,17 +37,17 @@ export function updateCartDisplay() {
     `;
     cartItemsContainer.appendChild(headerRow);
 
-    // Add cart items
+    // Ostukorvi sisu
     cart.items.forEach(item => {
         const itemRow = document.createElement('div');
         itemRow.className = 'cart-item';
         itemRow.innerHTML = `
-            <span style="display: flex; align-items: center;">
-                <img src="${item.product.image_url}" alt="${item.product.name}" style="width: 50px; margin-right: 10px;">
+            <span class="product-in-cart">
+                <img src="${item.product.image_url}" alt="${item.product.name}">
                 <h3>${item.product.name}</h3>
             </span>
             <p>${item.product.price}€</p>
-            <span style="display: flex; align-items: center; gap: 10px; justify-content: center;">
+            <span class="quantity-controls">
                 <button class="decrease">-</button>
                 <p>${item.quantity}</p>
                 <button class="increase">+</button>
@@ -50,6 +56,7 @@ export function updateCartDisplay() {
             <p>${(item.product.price * item.quantity).toFixed(2)}€ </p>
         `;
 
+        // Lisa ja eemalda nupud
         const decreaseButton = itemRow.querySelector('.decrease');
         const increaseButton = itemRow.querySelector('.increase');
         const removeButton = itemRow.querySelector('.remove');
@@ -61,14 +68,14 @@ export function updateCartDisplay() {
 
         increaseButton.addEventListener('click', () => {
             if (inventory.itemQuantity(item.product.name) === 0) {
-                const existingWarningMessages = cartContainer.querySelectorAll('.out-of-stock-message');
+                const existingWarningMessages = cartDiv.querySelectorAll('.out-of-stock-message');
                 if (existingWarningMessages.length === 0) {
                     const warningMessage = document.createElement('p');
                     warningMessage.className = 'out-of-stock-message';
                     warningMessage.textContent = `Sorry, ${item.product.name} is out of stock.`;
-                    cartContainer.appendChild(warningMessage);
+                    cartDiv.appendChild(warningMessage);
                     setTimeout(() => {
-                        cartContainer.removeChild(warningMessage);
+                        cartDiv.removeChild(warningMessage);
                     }, 3000);
                 }
                 return;
@@ -87,7 +94,7 @@ export function updateCartDisplay() {
         cartItemsContainer.appendChild(itemRow);
     });
 
-    // Add total row
+    // Total price rida
     const totalRow = document.createElement('div');
     totalRow.className = 'cart-item';
     totalRow.innerHTML = `
@@ -97,4 +104,28 @@ export function updateCartDisplay() {
         <p>${cart.getTotal()}€</p>
     `;
     cartItemsContainer.appendChild(totalRow);
+    const buyRow = document.createElement('div');
+    buyRow.className = 'cart-item';
+    buyRow.innerHTML = `
+        <p></p>
+        <p></p>
+        <p></p>
+        <button class="buy-button">Buy Now</button>`
+    cartItemsContainer.appendChild(buyRow)
+}
+
+export function loadCartView() {
+    document.querySelector('.product-container').innerHTML = ''
+    document.querySelector('.container h1').textContent = 'Cart'
+    hideRoastLevels()
+    clearProductView()
+    updateCartDisplay();
+}
+
+// Tühjendab vaate
+export function clearCartView() {
+    const cartDiv = document.getElementById('cart')
+    if (cartDiv) {
+        cartDiv.remove()
+    }
 }

@@ -1,13 +1,13 @@
 import { displayProducts } from "./allProductsView.js";
 import { loadProductView } from "./productView.js";
-// import { loadCartView } from "./cartView.js";
+import { loadCartView } from "./cartView.js";
 
 // Funktsioon, mis vastutab vaadete vahel liikumise eest
 export const navigate = (view, param) => {
     const views = {
         category: () => displayProducts(param || "all"),
         product: () => loadProductView(param),
-        // cart: () => loadCartView(),
+        cart: () => loadCartView(),
     };
 
     // Vali ja käivita sobiv vaade
